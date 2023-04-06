@@ -7,7 +7,7 @@ const searchExercise: NextApiHandler = async (
   const options = {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": "aaf2ce0701mshb9b22c6efd21817p1aca72jsnffabfaece05f",
+      "X-RapidAPI-Key": `${process.env.API_KEY}`,
       "X-RapidAPI-Host": "exerciseapi3.p.rapidapi.com",
     },
   };

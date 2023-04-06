@@ -31,14 +31,24 @@ function Exercises() {
                   <li>{singleExercise.Force}</li>
                   <li>{singleExercise.Name}</li>
                   <li>{singleExercise.Type}</li>
-                  <li>{singleExercise["Primary Muscles"]["0"]}</li>
-
+                  <div className="bg-green-500">
+                    Primary Muscles
+                    <li>{singleExercise["Primary Muscles"]["0"]}</li>
+                    <li>{singleExercise["Primary Muscles"]["1"]}</li>
+                  </div>
+                  <div className="bg-blue-500">
+                    Secondary Muscles
+                    <li>{singleExercise.SecondaryMuscles["0"]}</li>
+                    <li>{singleExercise.SecondaryMuscles["1"]}</li>
+                  </div>
                   <Link
                     href={singleExercise["Youtube link"]}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <li>{singleExercise["Youtube link"]}</li>
+                    <li className="bg-red-500">
+                      {singleExercise["Youtube link"]}
+                    </li>
                   </Link>
                 </div>
               ))}
