@@ -1,4 +1,5 @@
 import Exercises from "@/components/Exercises";
+import MusclesList from "@/components/MusclesList";
 import Head from "next/head";
 
 export default function Home() {

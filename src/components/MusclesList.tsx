@@ -18,12 +18,14 @@ const MusclesList = ({ onMuscleChange }: any) => {
 
   console.log(allMuscles);
 
+  const data = "triceps";
+
   return (
     <div>
       <div className="grid grid-cols-2 border">
         {allMuscles.map((muscle: string) => (
-          <div key={Math.random()}>
-            <button onClick={onMuscleChange}>{muscle}</button>
+          <div key={muscle}>
+            <button onClick={() => onMuscleChange({ muscle })}>{muscle}</button>
           </div>
         ))}
       </div>

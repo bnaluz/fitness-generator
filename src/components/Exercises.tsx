@@ -53,8 +53,8 @@ function Exercises() {
                 </div>
               ))}
           </ul>
-          <MusclesList onMuscleChange={exerciseFetchHandler} />
         </div>
+
         <button
           onClick={() => {
             exerciseFetchHandler("pectoralis major");
@@ -63,6 +63,7 @@ function Exercises() {
           Click me
         </button>
       </div>
+      <MusclesList onMuscleChange={exerciseFetchHandler} />
     </div>
   );
 }
