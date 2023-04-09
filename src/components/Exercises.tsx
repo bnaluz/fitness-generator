@@ -5,7 +5,7 @@ import MusclesList from "./MusclesList";
 function Exercises() {
   const [pickedExercises, setPickedExercises] = useState([]);
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
   const exerciseFetchHandler = async (selectedMuscle: string) => {
     const options = {
@@ -16,89 +16,52 @@ function Exercises() {
     await fetch("/api/getExercises", options)
       .then((response) => response.json())
       .then((data) => setPickedExercises(data));
-    setShow(true);
+    // setShow(true);
   };
 
   return (
     <div>
       <div>
-        <div>Exercise Title</div>
-        <div>
-          <ul>
-            {show &&
-              pickedExercises.map((singleExercise) => (
-                <div key={Math.random()}>
-                  <li>{singleExercise.Force}</li>
-                  <li>{singleExercise.Name}</li>
-                  <li>{singleExercise.Type}</li>
-                  <div className="bg-green-500">
-                    Primary Muscles
-                    <li>{singleExercise["Primary Muscles"]["0"]}</li>
-                    <li>{singleExercise["Primary Muscles"]["1"]}</li>
-                  </div>
-                  <div className="bg-blue-500">
-                    Secondary Muscles
-                    <li>{singleExercise.SecondaryMuscles["0"]}</li>
-                    <li>{singleExercise.SecondaryMuscles["1"]}</li>
-                  </div>
-                  <Link
-                    href={singleExercise["Youtube link"]}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <li className="bg-red-500">
-                      {singleExercise["Youtube link"]}
-                    </li>
-                  </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <MusclesList onMuscleChange={exerciseFetchHandler} />
+          {pickedExercises.length === 0 && (
+            <div className="align-middle ml-12 mt-24">
+              No exercises for this muscle group yet!
+            </div>
+          )}
+          <ul className="grid grid-cols-1 md:grid-cols-3">
+            {pickedExercises.map((singleExercise) => (
+              <div
+                className="max-w-md bg-slate-400 mx-2 my-1 overflow-hidden"
+                key={Math.random()}
+              >
+                <li className="italic font-bold">{singleExercise.Name}</li>
+                {/* <li>{singleExercise.Force}</li> */}
+                <li>{singleExercise.Type}</li>
+                <div className="bg-blue-200">
+                  Primary Muscles:
+                  <li>{singleExercise["Primary Muscles"]["0"]}</li>
+                  <li>{singleExercise["Primary Muscles"]["1"]}</li>
                 </div>
-              ))}
+                <div className="bg-blue-300">
+                  Secondary Muscles:
+                  <li>{singleExercise.SecondaryMuscles["0"]}</li>
+                  <li>{singleExercise.SecondaryMuscles["1"]}</li>
+                </div>
+                <Link
+                  href={singleExercise["Youtube link"]}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <li>Youtube Link</li>
+                </Link>
+              </div>
+            ))}
           </ul>
         </div>
-
-        <button
-          onClick={() => {
-            exerciseFetchHandler("pectoralis major");
-          }}
-        >
-          Click me
-        </button>
       </div>
-      <MusclesList onMuscleChange={exerciseFetchHandler} />
     </div>
   );
 }
 
 export default Exercises;
-
-{
-  /* <div>
-            <button className="mx-4" onClick={exerciseFetchHandler}>
-              Click ME
-            </button>
-          </div>
-          <div>
-            <button
-              onClick={() => {
-                exerciseFetchHandler("pectoralis major");
-              }}
-            >
-              Trap
-            </button>
-            <button
-              onClick={() => {
-                exerciseFetchHandler("abdominals");
-              }}
-            >
-              Abs
-            </button>
-            <button
-              className="mx-2"
-              onClick={() => {
-                setPickedExercises([]);
-                setShow(false);
-              }}
-            >
-              reset
-            </button>
-            </div> */
-}

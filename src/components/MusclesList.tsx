@@ -16,16 +16,13 @@ const MusclesList = ({ onMuscleChange }: any) => {
     return null;
   }
 
-  console.log(allMuscles);
-
-  const data = "triceps";
-
   return (
     <div>
+      <div>Muscles List</div>
       <div className="grid grid-cols-2 border">
         {allMuscles.map((muscle: string) => (
           <div key={muscle}>
-            <button onClick={() => onMuscleChange({ muscle })}>{muscle}</button>
+            <button onClick={() => onMuscleChange(muscle)}>{muscle}</button>
           </div>
         ))}
       </div>
