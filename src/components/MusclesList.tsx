@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const MusclesList = ({ onMuscleChange }: any) => {
-  const [allMuscles, setAllMuscles] = useState();
+  const [allMuscles, setAllMuscles] = useState([]);
 
   useEffect(() => {
     const musclesFetchHandler = async () => {
@@ -19,7 +19,8 @@ const MusclesList = ({ onMuscleChange }: any) => {
   return (
     <div>
       <div>Muscles List</div>
-      <div className="grid grid-cols-2 border">
+      {allMuscles.length === 0 && <div>Loading muscle options!</div>}
+      <div className="grid grid-cols-2 border ">
         {allMuscles.map((muscle: string) => (
           <div key={muscle}>
             <button onClick={() => onMuscleChange(muscle)}>{muscle}</button>
