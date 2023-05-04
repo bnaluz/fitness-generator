@@ -38,7 +38,7 @@ function Exercises() {
               No exercises for this muscle group yet!
             </div>
           )}
-          <ul className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {!isLoading &&
               pickedExercises.map((singleExercise) => (
                 <ExerciseCard
