@@ -42,6 +42,7 @@ function Exercises() {
             {!isLoading &&
               pickedExercises.map((singleExercise) => (
                 <ExerciseCard
+                  key={singleExercise.Name}
                   Name={singleExercise.Name}
                   Type={singleExercise.Type}
                   PrimaryMusclesOne={singleExercise["Primary Muscles"][0]}
