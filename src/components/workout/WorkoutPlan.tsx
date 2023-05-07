@@ -10,6 +10,7 @@ const WorkoutPlan = () => {
     <div>
       {workoutPlan.exercises.map((exercise) => (
         <WorkoutPlanItem
+          key={exercise.id}
           exerciseTitle={exercise.name}
           repValue={exercise.reps}
           weightValue={exercise.weight}
