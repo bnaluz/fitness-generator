@@ -24,13 +24,15 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-between py-2 px-4 border-b border-gray-300">
-      <span className="font-semibold">{exerciseTitle}</span>
-      <div className="flex items-center space-x-2">
+    <div className="flex flex-col md:flex-row items-center justify-between py-2 px-4 border-b border-gray-300">
+      <span className="font-semibold mb-2 md:mb-0 md:mr-4">
+        {exerciseTitle}
+      </span>
+      <div className="flex flex-col md:flex-row items-center md:space-x-2">
         <label>
           Sets:
           <input
-            className="mx-2 border border-gray-300 rounded-lg px-2 py-1"
+            className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={setValue}
             placeholder="how many sets?"
@@ -40,7 +42,7 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
         <label>
           Reps:
           <input
-            className="mx-2 border border-gray-300 rounded-lg px-2 py-1"
+            className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={repValue}
             placeholder="how many reps?"
@@ -50,7 +52,7 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
         <label>
           Weight:
           <input
-            className="mx-2 border border-gray-300 rounded-lg px-2 py-1"
+            className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={weightValue}
             placeholder="what weight?"

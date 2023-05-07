@@ -36,7 +36,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
             <HeartButton />
           </div>
           <div className="mx-2">
-            <div className="mt-8 font-semibold text-md">{Name}</div>
+            <div className="mt-4 md:mt-8 font-semibold text-md">{Name}</div>
             <div className="font-light">Exercise Type: {Type}</div>
             <div className="flex flex-col">
               <div className="underline">Primary Muscles:</div>
@@ -48,14 +48,14 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <div>{SecondaryMusclesOne}</div>
               {SecondaryMusclesTwo && <div>{SecondaryMusclesTwo}</div>}
             </div>
-            <div className="flex">
+            <div className="flex flex-col md:flex-row md:justify-between">
               <Link
-                className="flex"
+                className="flex items-center mb-2 md:mb-0"
                 href={YoutubeLink}
                 target="_blank"
                 rel="noreferrer"
               >
-                <AiFillYoutube className="fill-red-500" size={24} />
+                <AiFillYoutube className="fill-red-500 mr-2" size={24} />
                 <div>Watch Demo</div>
               </Link>
             </div>
