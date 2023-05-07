@@ -1,22 +1,21 @@
 import React from "react";
 import useWorkoutStore from "../hooks/useWorkout";
 
+import WorkoutPlanItem from "./WorkoutPlanItem";
+
 const WorkoutPlan = () => {
   const workoutPlan = useWorkoutStore();
 
   return (
     <div>
-      <div>
-        {workoutPlan.exercises.map((item) => (
-          <div className="flex" key={item.name}>
-            <div className="mx-1">{item.name}</div>
-
-            <div onClick={() => workoutPlan.incrementReps(item.name)}>
-              {item.reps}
-            </div>
-          </div>
-        ))}
-      </div>
+      {workoutPlan.exercises.map((exercise) => (
+        <WorkoutPlanItem
+          exerciseTitle={exercise.name}
+          repValue={exercise.reps}
+          weightValue={exercise.weight}
+          setValue={exercise.sets}
+        />
+      ))}
     </div>
   );
 };

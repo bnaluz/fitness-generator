@@ -28,33 +28,37 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   return (
     <div className="col-span-1 cursor-pointer group mx-1 my-1">
       <div className="flex flex-col gap-2 w-full">
-        <div className="aspect-square w-full relative overflow-hidden rounded-xl  bg-blue-200">
+        <div className="aspect-square w-full relative overflow-scroll rounded-xl outline">
           <div
             onClick={() => workoutPlan.addToWorkout({ name: Name, id: Name })}
             className="absolute top-3 right-3"
           >
             <HeartButton />
           </div>
-          <div className="mt-8 font-semibold text-md">{Name}</div>
-          <div className="font-light">{Type}</div>
-          <div className="flex flex-row items-center">
-            <div>{PrimaryMusclesOne}</div>
-            {PrimaryMusclesTwo && <div>, {PrimaryMusclesTwo}</div>}
-          </div>
-          <div className="flex flex-row items-center">
-            <div>{SecondaryMusclesOne}</div>
-            {SecondaryMusclesTwo && <div>, {SecondaryMusclesTwo}</div>}
-          </div>
-          <div className="flex">
-            <Link
-              className="flex"
-              href={YoutubeLink}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <AiFillYoutube className="fill-red-500" size={24} />
-              <div>Demo Link</div>
-            </Link>
+          <div className="mx-2">
+            <div className="mt-8 font-semibold text-md">{Name}</div>
+            <div className="font-light">Exercise Type: {Type}</div>
+            <div className="flex flex-col">
+              <div className="underline">Primary Muscles:</div>
+              <div>{PrimaryMusclesOne}</div>
+              {PrimaryMusclesTwo && <div>{PrimaryMusclesTwo}</div>}
+            </div>
+            <div className="flex flex-col">
+              <div className="underline">Secondary Muscles:</div>
+              <div>{SecondaryMusclesOne}</div>
+              {SecondaryMusclesTwo && <div>{SecondaryMusclesTwo}</div>}
+            </div>
+            <div className="flex">
+              <Link
+                className="flex"
+                href={YoutubeLink}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AiFillYoutube className="fill-red-500" size={24} />
+                <div>Watch Demo</div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

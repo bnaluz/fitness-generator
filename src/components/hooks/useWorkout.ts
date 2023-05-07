@@ -1,16 +1,20 @@
 import { create } from "zustand";
 
 type Exercise = {
+  sets?: number;
   name: any;
   id: any;
   reps?: number;
+  weight?: number;
 };
 
 interface WorkoutStore {
   exercises: Exercise[];
   addToWorkout: (exercise: Exercise) => void;
   removeFromWorkout: (exercise: Exercise) => void;
-  incrementReps: (exerciseId: any) => void;
+  updateSets: (exerciseId: any, sets: number) => void;
+  updateReps: (exerciseId: any, reps: number) => void;
+  updateWeight: (exerciseId: any, weight: number) => void;
 }
 
 const useWorkoutStore = create<WorkoutStore>((set) => ({
@@ -24,7 +28,12 @@ const useWorkoutStore = create<WorkoutStore>((set) => ({
       if (existingExercise) {
         return state;
       } else {
-        return { exercises: [...state.exercises, { ...exercise, reps: 1 }] };
+        return {
+          exercises: [
+            ...state.exercises,
+            { ...exercise, sets: 0, reps: 0, weight: 0 },
+          ],
+        };
       }
     }),
 
@@ -33,10 +42,24 @@ const useWorkoutStore = create<WorkoutStore>((set) => ({
       exercises: state.exercises.filter((i) => i.id !== exercise.id),
     })),
 
-  incrementReps: (exerciseId) =>
+  updateSets: (exerciseId, sets) =>
     set((state) => ({
       exercises: state.exercises.map((i) =>
-        i.id === exerciseId ? { ...i, reps: (i.reps || 0) + 1 } : i
+        i.id === exerciseId ? { ...i, sets } : i
+      ),
+    })),
+
+  updateReps: (exerciseId, reps) =>
+    set((state) => ({
+      exercises: state.exercises.map((i) =>
+        i.id === exerciseId ? { ...i, reps } : i
+      ),
+    })),
+
+  updateWeight: (exerciseId, weight) =>
+    set((state) => ({
+      exercises: state.exercises.map((i) =>
+        i.id === exerciseId ? { ...i, weight } : i
       ),
     })),
 }));
