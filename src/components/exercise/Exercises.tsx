@@ -29,16 +29,16 @@ function Exercises() {
 
   return (
     <div>
+      <MusclesList onMuscleChange={exerciseFetchHandler} />
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          <MusclesList onMuscleChange={exerciseFetchHandler} />
+        <div>
           {isLoading && <div>Loading...</div>}
           {pickedExercises.length === 0 && !isLoading && (
             <div className="align-middle ml-12 mt-24">
               No exercises for this muscle group yet!
             </div>
           )}
-          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <ul className="grid grid-cols-1 md:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
             {!isLoading &&
               pickedExercises.map((singleExercise) => (
                 <ExerciseCard

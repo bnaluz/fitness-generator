@@ -35,6 +35,7 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
             className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={setValue}
+            min="0"
             placeholder="how many sets?"
             onChange={(e) => updateSets(exercise.id, parseInt(e.target.value))}
           />
@@ -45,6 +46,7 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
             className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={repValue}
+            min="0"
             placeholder="how many reps?"
             onChange={(e) => updateReps(exercise.id, parseInt(e.target.value))}
           />
@@ -59,6 +61,7 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
             onChange={(e) =>
               updateWeight(exercise.id, parseInt(e.target.value))
             }
+            min="0"
           />
         </label>
         <button
