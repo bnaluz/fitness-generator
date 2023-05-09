@@ -13,6 +13,7 @@ type exerciseTypes = {
 function Exercises() {
   const [pickedExercises, setPickedExercises] = useState<exerciseTypes[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
 
   const exerciseFetchHandler = async (selectedMuscle: string) => {
     setIsLoading(true);
@@ -25,20 +26,30 @@ function Exercises() {
       .then((response) => response.json())
       .then((data) => setPickedExercises(data));
     setIsLoading(false);
+    setIsTouched(true);
   };
 
   return (
     <div>
       <MusclesList onMuscleChange={exerciseFetchHandler} />
       <div>
-        <div>
+        <div className="pt-10">
           {isLoading && <div>Loading...</div>}
-          {pickedExercises.length === 0 && !isLoading && (
-            <div className="align-middle ml-12 mt-24">
-              No exercises for this muscle group yet!
+          {pickedExercises.length === 0 && !isLoading && isTouched && (
+            <div className="bg-gray-100 h-60vh flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-gray-500 text-lg font-medium mb-4">
+                  No exercises for this muscle group yet!
+                </div>
+                <img
+                  src="https://source.unsplash.com/500x500/?fitness"
+                  alt="No exercises available"
+                  className="mx-auto rounded-lg shadow-md"
+                />
+              </div>
             </div>
           )}
-          <ul className="grid grid-cols-1 md:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {!isLoading &&
               pickedExercises.map((singleExercise) => (
                 <ExerciseCard

@@ -18,7 +18,10 @@ const MusclesList = ({ onMuscleChange }: any) => {
 
   return (
     <div className="bg-white rounded shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-4">Muscles List</h2>
+      <h2 className="text-2xl font-bold mb-1">Muscles List</h2>
+      <h1 className="text-lg font-semibold text-gray-500 mb-2">
+        Pick a muscle
+      </h1>
       {allMuscles.length === 0 && (
         <div className="text-gray-500 mb-4">Loading muscle options!</div>
       )}
@@ -26,7 +29,7 @@ const MusclesList = ({ onMuscleChange }: any) => {
         {allMuscles.map((muscle: string) => (
           <button
             key={muscle}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
             onClick={() => onMuscleChange(muscle)}
           >
             {muscle}
