@@ -17,7 +17,7 @@ const MusclesList = ({ onMuscleChange }: any) => {
   }
 
   return (
-    <div className="bg-white rounded shadow-lg p-6">
+    <div className="rounded  p-6">
       <h2 className="text-2xl font-bold mb-1">Muscles List</h2>
       <h1 className="text-lg font-semibold text-gray-500 mb-2">
         Pick a muscle
@@ -29,7 +29,7 @@ const MusclesList = ({ onMuscleChange }: any) => {
         {allMuscles.map((muscle: string) => (
           <button
             key={muscle}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
+            className="bg-[#23237f] hover:bg-[#01011f] text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
             onClick={() => onMuscleChange(muscle)}
           >
             {muscle}

@@ -24,11 +24,11 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between py-2 px-4 border-b border-gray-300">
+    <div className="flex flex-col md:flex-row items-center justify-between py-2 px-4 border-b bg-white ">
       <span className="font-semibold mb-2 md:mb-0 md:mr-4">
         {exerciseTitle}
       </span>
-      <div className="flex flex-col md:flex-row items-center md:space-x-2">
+      <div className="flex flex-col md:flex-row items-center md:space-x-2 ">
         <label>
           Sets:
           <input
