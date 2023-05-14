@@ -1,4 +1,5 @@
 import Exercises from "@/components/exercise/Exercises";
+import RegisterModal from "@/components/modals/RegisterModal";
 import WorkoutPlan from "@/components/workout/WorkoutPlan";
 
 import Head from "next/head";
@@ -13,6 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <RegisterModal />
       <Exercises />
       <WorkoutPlan />
     </>
