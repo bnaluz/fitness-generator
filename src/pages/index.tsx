@@ -1,6 +1,7 @@
 import Exercises from "@/components/exercise/Exercises";
 import RegisterModal from "@/components/modals/RegisterModal";
 import WorkoutPlan from "@/components/workout/WorkoutPlan";
+import ToasterProvider from "@/providers/ToasterProvider";
 
 import Head from "next/head";
 
@@ -13,7 +14,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <ToasterProvider />
       <RegisterModal />
       <Exercises />
       <WorkoutPlan />
