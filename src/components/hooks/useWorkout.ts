@@ -1,20 +1,20 @@
 import { create } from "zustand";
 
 type Exercise = {
-  sets?: number;
+  setCount?: number;
   name: any;
   id: any;
-  reps?: number;
-  weight?: number;
+  repCount?: number;
+  weightCount?: number;
 };
 
 interface WorkoutStore {
   exercises: Exercise[];
   addToWorkout: (exercise: Exercise) => void;
   removeFromWorkout: (exercise: Exercise) => void;
-  updateSets: (exerciseId: any, sets: number) => void;
-  updateReps: (exerciseId: any, reps: number) => void;
-  updateWeight: (exerciseId: any, weight: number) => void;
+  updateSets: (exerciseId: any, setCount: number) => void;
+  updateReps: (exerciseId: any, repCount: number) => void;
+  updateWeight: (exerciseId: any, weightCount: number) => void;
 }
 
 const useWorkoutStore = create<WorkoutStore>((set) => ({
@@ -31,7 +31,7 @@ const useWorkoutStore = create<WorkoutStore>((set) => ({
         return {
           exercises: [
             ...state.exercises,
-            { ...exercise, sets: 0, reps: 0, weight: 0 },
+            { ...exercise, setCount: 0, repCount: 0, weightCount: 0 },
           ],
         };
       }
@@ -42,24 +42,24 @@ const useWorkoutStore = create<WorkoutStore>((set) => ({
       exercises: state.exercises.filter((i) => i.id !== exercise.id),
     })),
 
-  updateSets: (exerciseId, sets) =>
+  updateSets: (exerciseId, setCount) =>
     set((state) => ({
       exercises: state.exercises.map((i) =>
-        i.id === exerciseId ? { ...i, sets } : i
+        i.id === exerciseId ? { ...i, setCount } : i
       ),
     })),
 
-  updateReps: (exerciseId, reps) =>
+  updateReps: (exerciseId, repCount) =>
     set((state) => ({
       exercises: state.exercises.map((i) =>
-        i.id === exerciseId ? { ...i, reps } : i
+        i.id === exerciseId ? { ...i, repCount } : i
       ),
     })),
 
-  updateWeight: (exerciseId, weight) =>
+  updateWeight: (exerciseId, weightCount) =>
     set((state) => ({
       exercises: state.exercises.map((i) =>
-        i.id === exerciseId ? { ...i, weight } : i
+        i.id === exerciseId ? { ...i, weightCount } : i
       ),
     })),
 }));

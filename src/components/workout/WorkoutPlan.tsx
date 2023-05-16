@@ -1,10 +1,42 @@
 import React from "react";
 import useWorkoutStore from "../hooks/useWorkout";
-
+import { useState } from "react";
+import axios from "axios";
 import WorkoutPlanItem from "./WorkoutPlanItem";
 
 const WorkoutPlan = () => {
+  const [saving, setSaving] = useState(false);
   const workoutPlan = useWorkoutStore();
+
+  const saveWorkout = async () => {
+    setSaving(true);
+
+    try {
+      // Prepare the workout data to be sent to the server
+      const workoutData = {
+        exercises: workoutPlan.exercises.map((exercise) => ({
+          name: exercise.name,
+          repCount: exercise.repCount,
+          weightCount: exercise.weightCount,
+          setCount: exercise.setCount,
+        })),
+      };
+
+      // Send a POST request to save the workout
+      await axios.post("/api/workouts", workoutData);
+
+      // // Reset the workout plan
+      // workoutPlan.reset();
+
+      // Show a success message or perform any additional actions
+      console.log("Workout saved successfully!");
+    } catch (error) {
+      // Handle the error, display an error message, or perform any error-specific actions
+      console.error("Error saving workout:", error);
+    }
+
+    setSaving(false);
+  };
 
   return (
     <div
@@ -19,12 +51,19 @@ const WorkoutPlan = () => {
           <WorkoutPlanItem
             key={exercise.id}
             exerciseTitle={exercise.name}
-            repValue={exercise.reps}
-            weightValue={exercise.weight}
-            setValue={exercise.sets}
+            repValue={exercise.repCount}
+            weightValue={exercise.weightCount}
+            setValue={exercise.setCount}
           />
         ))}
       </div>
+      <button
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        onClick={saveWorkout}
+        disabled={saving}
+      >
+        {saving ? "Saving..." : "Save Workout"}
+      </button>
     </div>
   );
 };
