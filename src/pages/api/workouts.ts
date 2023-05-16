@@ -1,4 +1,3 @@
-import React from "react";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import getCurrentUser from "@/actions/getCurrentUser";
@@ -14,40 +13,33 @@ export default async function createWorkout(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const currentUser = await getCurrentUser();
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
-
   try {
+    const currentUser = await getCurrentUser(); // Get the current user asynchronously
+
+    if (!currentUser) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    // Extract the necessary data from the request body
     const { exercises } = req.body;
 
-    // Prepare the formatted exercises data
-    const formattedExercises = exercises.map((exercise: ExerciseData) => ({
-      name: exercise.name,
-      repCount: exercise.repCount,
-      weightCount: exercise.weightCount,
-      setCount: exercise.setCount,
-    }));
-
-    // Create the workout with exercises using Prisma
-    const workout = await prisma.workout.create({
+    // Create a new workout and associate it with the current user
+    const createdWorkout = await prisma.workout.create({
       data: {
-        userId: String(currentUser?.id),
+        userId: currentUser.id, // Assign the user ID
         date: new Date(),
         exercises: {
-          create: formattedExercises,
+          create: exercises.map((exercise: ExerciseData) => ({
+            ...exercise,
+            user: { connect: { id: currentUser.id } }, // Connect the exercise to the user
+          })),
         },
-      },
-      include: {
-        exercises: true,
       },
     });
 
-    return res.status(201).json(workout);
+    res.status(201).json(createdWorkout);
   } catch (error) {
     console.error("Error saving workout:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
