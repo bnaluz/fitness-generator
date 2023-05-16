@@ -3,7 +3,6 @@ import { SafeUser } from "@/types";
 import Container from "@/utils/Container";
 import Logo from "./Logo";
 import UserMenu from "./UserMenu";
-import { userAgent } from "next/server";
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
