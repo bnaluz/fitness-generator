@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
-import getCurrentUser from "@/actions/getCurrentUser";
+import { getSession } from "next-auth/react";
 
 interface ExerciseData {
+  exercises: [];
   name: string;
   repCount: number;
   weightCount: number;
@@ -14,12 +15,20 @@ export default async function createWorkout(
   res: NextApiResponse
 ): Promise<void> {
   try {
-    const currentUser = await getCurrentUser(); // Get the current user asynchronously
-
-    if (!currentUser) {
+    const session = await getSession();
+    if (!session?.user?.email) {
       return res.status(401).json({ error: "User not authenticated" });
     }
 
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        email: session.user.email as string,
+      },
+    });
+
+    if (!currentUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
     // Extract the necessary data from the request body
     const { exercises } = req.body;
 

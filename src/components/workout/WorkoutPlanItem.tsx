@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React from "react";
 import useWorkoutStore from "../hooks/useWorkout";
 
 interface WorkoutPlanItemProps {
