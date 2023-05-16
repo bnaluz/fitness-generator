@@ -1,3 +1,4 @@
+import React from "react";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import getCurrentUser from "@/actions/getCurrentUser";
@@ -13,7 +14,7 @@ export default async function createWorkout(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const currentUser = await getCurrentUser();
+  const currentUser = getCurrentUser();
 
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
@@ -33,7 +34,7 @@ export default async function createWorkout(
     // Create the workout with exercises using Prisma
     const workout = await prisma.workout.create({
       data: {
-        userId: String(currentUser?.id),
+        userId: currentUser?.id,
         date: new Date(),
         exercises: {
           create: formattedExercises,
