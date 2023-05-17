@@ -23,9 +23,6 @@ export default async function handler(
         email: session?.user?.email as string,
       },
     });
-    if (user) {
-      return res.status(200).json({ message: `${session?.user?.email}` });
-    }
 
     // Create the workout and connect it to the user
     const workout = await prisma.workout.create({
