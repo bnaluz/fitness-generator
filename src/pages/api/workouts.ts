@@ -1,12 +1,12 @@
 import prisma from "@/libs/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 
 interface ExerciseData {
   name: string;
   repCount: number;
   weightCount: number;
   setCount: number;
-  userId: string;
 }
 
 export default async function saveWorkout(
@@ -14,6 +14,13 @@ export default async function saveWorkout(
   res: NextApiResponse
 ) {
   try {
+    const session = await getSession({ req });
+
+    // Check if the user is authenticated
+    if (!session) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
     // Check if the request body contains the exercises data
     if (
       !req.body ||
@@ -24,6 +31,7 @@ export default async function saveWorkout(
     }
 
     const exercises: ExerciseData[] = req.body.exercises;
+    const userEmail = session?.user?.email ?? "";
 
     const createdWorkout = await prisma.workout.create({
       data: {
@@ -34,10 +42,10 @@ export default async function saveWorkout(
             repCount: exercise.repCount,
             weightCount: exercise.weightCount,
             setCount: exercise.setCount,
-            user: { connect: { id: exercise.userId } }, // Connect to the user using the userId
+            user: { connect: { userEmail: session?.user?.email } }, // Connect to the user using the session user email
           })),
         },
-        user: { connect: { id: exercises[0].userId } }, // Connect to the user using the userId
+        user: { connect: { email: userEmail } }, // Connect to the user using the session user email
       },
       include: {
         exercises: true,
