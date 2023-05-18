@@ -37,7 +37,7 @@ export default async function saveWorkout(
             userId: exercise.userId, // Use userId instead of user
           })),
         },
-        userId: exercises[0].userId, // Use userId instead of user
+        user: { connect: { id: exercises[0].userId } }, // Connect to the user using userId
       },
       include: {
         exercises: true,
