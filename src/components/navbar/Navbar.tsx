@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         <Container>
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo />
-            <div>signed in as {currentUser?.email}</div>
+            <div>signed in as {currentUser?.name}</div>
             <UserMenu currentUser={currentUser} />
           </div>
         </Container>

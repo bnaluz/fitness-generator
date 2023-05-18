@@ -6,6 +6,7 @@ type Exercise = {
   id: any;
   repCount?: number;
   weightCount?: number;
+  userId: string; // Add userId property
 };
 
 interface WorkoutStore {

@@ -26,15 +26,19 @@ const WorkoutPlan: React.FC = () => {
           setCount: exercise.setCount,
         })),
       };
+      console.log(workoutData);
+      console.log(workoutPlan.exercises);
 
       // Send a POST request to save the workout
-      await axios.post("/api/workouts", workoutData);
+      const response = await axios.post("/api/workouts", workoutPlan.exercises);
 
-      // Reset the workout plan
-      // workoutPlan.reset();
-
-      // Show a success message or perform any additional actions
-      console.log("Workout saved successfully!");
+      if (response.status === 200) {
+        console.log("Workout saved successfully!");
+        // Reset the workout plan
+        // workoutPlan.reset();
+      } else {
+        console.error("Error saving workout:", response.data.message);
+      }
     } catch (error) {
       // Handle the error, display an error message, or perform any error-specific actions
       console.error("Error saving workout:", error);
