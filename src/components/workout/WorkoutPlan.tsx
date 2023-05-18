@@ -24,7 +24,6 @@ const WorkoutPlan: React.FC = () => {
           repCount: exercise.repCount,
           weightCount: exercise.weightCount,
           setCount: exercise.setCount,
-          user: session?.user?.name,
         })),
       };
 
