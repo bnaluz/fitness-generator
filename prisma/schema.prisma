@@ -26,14 +26,14 @@ model User {
 
 model Exercise {
   id               String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId           String     @db.ObjectId
+  userId           String?  @db.ObjectId
   name             String
   repCount         Int
   weightCount      Int
   setCount         Int
   workoutId        String     @db.ObjectId
   workout          Workout    @relation(fields: [workoutId], references: [id])
-  user             User       @relation(fields: [userId], references: [id])
+  user             User?      @relation(fields: [userId], references: [id])
 }
 
 model Workout {
