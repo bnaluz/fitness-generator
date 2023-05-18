@@ -1,63 +1,52 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
-import { getSession } from "next-auth/react";
+import { NextApiRequest, NextApiResponse } from "next";
 
 interface ExerciseData {
   name: string;
   repCount: number;
   weightCount: number;
   setCount: number;
+  userId: string;
 }
 
-export default async function handler(
+export default async function saveWorkout(
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void> {
+) {
   try {
-    const session = await getSession({ req });
-    const { exercises } = req.body as { exercises: ExerciseData[] };
-    console.log(req.body);
-    console.log("hello");
-    // Check if the session and user email are defined
-    if (!session || !session.user?.email) {
-      return res.status(400).json({ message: "User not authenticated" });
+    // Check if the request body contains the exercises data
+    if (
+      !req.body ||
+      !req.body.exercises ||
+      !Array.isArray(req.body.exercises)
+    ) {
+      return res.status(400).json({ message: "Invalid request body" });
     }
 
-    // Retrieve the user from the database based on the session
-    const user = await prisma.user.findUnique({
-      where: {
-        email: session.user.email,
-      },
-    });
+    const exercises: ExerciseData[] = req.body.exercises;
 
-    // Check if the user exists
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Create the workout and connect it to the user
-    const workout = await prisma.workout.create({
+    const createdWorkout = await prisma.workout.create({
       data: {
         date: new Date(),
         exercises: {
-          create: exercises?.map((exercise) => ({
+          create: exercises.map((exercise) => ({
             name: exercise.name,
             repCount: exercise.repCount,
             weightCount: exercise.weightCount,
             setCount: exercise.setCount,
-            userId: user.id,
+            userId: exercise.userId, // Assign the userId to the exercise
           })),
         },
-        userId: user.id,
+        userId: exercises[0].userId, // Assign the userId to the workout
       },
       include: {
-        exercises: true, // Include the exercises in the response
+        exercises: true,
       },
     });
 
-    return res.status(200).json(workout);
+    return res.status(200).json(createdWorkout);
   } catch (error) {
-    console.error("Error saving workout:", error);
+    console.error("Error creating workout:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
