@@ -34,6 +34,10 @@ const WorkoutPlan: React.FC = () => {
         console.log("Workout saved successfully!");
         // Reset the workout plan
         // workoutPlan.reset();
+        // Map the response data to the frontend
+        const savedWorkout = response.data;
+        // Display the saved workout to the user
+        // ...
       } else {
         console.error("Error saving workout:", response.data.message);
       }
