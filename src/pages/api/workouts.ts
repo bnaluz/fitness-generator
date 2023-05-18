@@ -34,10 +34,10 @@ export default async function saveWorkout(
             repCount: exercise.repCount,
             weightCount: exercise.weightCount,
             setCount: exercise.setCount,
-            user: { connect: { id: exercise.userId } }, // Connect the exercise to the user
+            userId: exercise.userId, // Use userId instead of user
           })),
         },
-        user: { connect: { id: exercises[0].userId } }, // Connect the workout to the user
+        userId: exercises[0].userId,
       },
       include: {
         exercises: true,
