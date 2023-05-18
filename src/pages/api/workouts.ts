@@ -42,7 +42,7 @@ export default async function saveWorkout(
             repCount: exercise.repCount,
             weightCount: exercise.weightCount,
             setCount: exercise.setCount,
-            user: { connect: { userEmail: session?.user?.email } }, // Connect to the user using the session user email
+            user: { connect: { email: userEmail } }, // Connect to the user using the session user email
           })),
         },
         user: { connect: { email: userEmail } }, // Connect to the user using the session user email
