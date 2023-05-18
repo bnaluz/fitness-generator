@@ -24,15 +24,12 @@ const WorkoutPlan: React.FC = () => {
           repCount: exercise.repCount,
           weightCount: exercise.weightCount,
           setCount: exercise.setCount,
+          userId: session?.user?.email, // Add userId property
         })),
       };
 
-      console.log(workoutData);
-
       // Send a POST request to save the workout
-      const response = await axios.post("/api/workouts", {
-        exercises: workoutData.exercises,
-      });
+      const response = await axios.post("/api/workouts", workoutData);
 
       if (response.status === 200) {
         console.log("Workout saved successfully!");
