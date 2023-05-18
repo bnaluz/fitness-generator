@@ -1,60 +1,56 @@
-import prisma from "@/libs/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-
-interface ExerciseData {
-  name: string;
-  repCount: number;
-  weightCount: number;
-  setCount: number;
-}
+import prisma from "@/libs/prismadb";
+import { Workout } from "@prisma/client";
 
 export default async function saveWorkout(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   try {
     const session = await getSession({ req });
 
     // Check if the user is authenticated
-    if (!session) {
-      return res.status(401).json({ message: "User not authenticated" });
+    if (!session?.user?.email) {
+      return res.status(401).json({ error: "User not authenticated" });
     }
 
-    // Check if the request body contains the exercises data
-    if (
-      !req.body ||
-      !req.body.exercises ||
-      !Array.isArray(req.body.exercises)
-    ) {
-      return res.status(400).json({ message: "Invalid request body" });
-    }
+    const userEmail = session.user.email as string;
 
-    const exercises: ExerciseData[] = req.body.exercises;
-    const userEmail = session?.user?.email ?? "";
-
-    const createdWorkout = await prisma.workout.create({
-      data: {
-        date: new Date(),
-        exercises: {
-          create: exercises.map((exercise) => ({
-            name: exercise.name,
-            repCount: exercise.repCount,
-            weightCount: exercise.weightCount,
-            setCount: exercise.setCount,
-            user: { connect: { email: userEmail } }, // Connect to the user using the session user email
-          })),
-        },
-        user: { connect: { email: userEmail } }, // Connect to the user using the session user email
-      },
-      include: {
-        exercises: true,
+    // Retrieve the current user from the database
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        email: userEmail,
       },
     });
 
-    return res.status(200).json(createdWorkout);
-  } catch (error) {
-    console.error("Error creating workout:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    if (!currentUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Extract the workout data from the request body
+    const { exercises } = req.body;
+
+    // Create a new workout object
+    const workoutData: Workout = {
+      user: {
+        connect: {
+          email: userEmail,
+        },
+      },
+      exercises: {
+        create: exercises,
+      },
+    };
+
+    // Save the workout to the database
+    const savedWorkout = await prisma.workout.create({
+      data: workoutData,
+    });
+
+    return res.status(200).json(savedWorkout);
+  } catch (error: any) {
+    console.error("Error saving workout:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }

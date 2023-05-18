@@ -43,3 +43,4 @@ model Workout {
   exercises        Exercise[]
   user             User       @relation(fields: [userId], references: [id])
 }
+
