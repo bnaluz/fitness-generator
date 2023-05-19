@@ -16,7 +16,7 @@ const WorkoutPlan: React.FC = () => {
       if (!session?.user?.email) {
         throw new Error("User not authenticated");
       }
-
+      const userEmail = session.user?.email ?? undefined;
       // Prepare the workout data to be sent to the server
       const workoutData = {
         exercises: workoutPlan.exercises.map((exercise) => ({
@@ -28,7 +28,8 @@ const WorkoutPlan: React.FC = () => {
       };
 
       // Send a POST request to save the workout
-      const response = await axios.post("/api/workouts", workoutData);
+      const response = await axios.post("/api/workout", workoutData);
+      console.log(workoutData.exercises);
 
       if (response.status === 200) {
         console.log("Workout saved successfully!");
