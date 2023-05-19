@@ -7,12 +7,6 @@ export default async function saveWorkouts(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { exercises } = req.body;
-
-  if (req.body) {
-    return res.status(201).json({ message: `${req.body}` });
-  }
-
   try {
     // Get the authenticated session
     const session: Session | null = await getSession({ req });
@@ -26,6 +20,14 @@ export default async function saveWorkouts(
 
     if (!userEmail) {
       return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { exercises } = req.body;
+
+    if (!exercises || !exercises.length) {
+      return res.status(400).json({
+        message: "Invalid request. Exercises data is missing or empty.",
+      });
     }
 
     // Save the workout to the database
@@ -55,8 +57,10 @@ export default async function saveWorkouts(
     });
 
     return res.status(200).json(workout);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error saving workout:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 }

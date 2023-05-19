@@ -1,13 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import WorkoutPlanItem from "./WorkoutPlanItem";
 import useWorkoutStore from "../hooks/useWorkout";
+import { SafeUser } from "@/types";
 
-const WorkoutPlan: React.FC = () => {
+interface WorkoutPlanProps {
+  currentUser?: SafeUser | null;
+}
+
+const WorkoutPlan: React.FC<WorkoutPlanProps> = () => {
   const [saving, setSaving] = useState(false);
   const workoutPlan = useWorkoutStore();
   const { data: session } = useSession();
+  const [currentUser, setCurrentUser] = useState<SafeUser | null>(null);
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async (): Promise<void> => {
+    try {
+      const response = await axios.get("/api/getCurrentUser");
+      if (!response.data) {
+        setCurrentUser(null);
+        return;
+      }
+      setCurrentUser(response.data);
+    } catch (error) {
+      console.error("Error fetching current user:", error);
+    }
+  };
 
   const saveWorkout = async (): Promise<void> => {
     setSaving(true);
@@ -28,8 +51,9 @@ const WorkoutPlan: React.FC = () => {
       };
 
       // Send a POST request to save the workout
-      const response = await axios.post("/api/workout", workoutData);
-      console.log(workoutData.exercises);
+      const response = await axios.post("/api/workout", {
+        exercises: workoutData.exercises,
+      });
 
       if (response.status === 200) {
         console.log("Workout saved successfully!");
@@ -49,7 +73,6 @@ const WorkoutPlan: React.FC = () => {
 
     setSaving(false);
   };
-
   return (
     <div className="bg-white mt-12 pt-10 mb-12 pb-2 max-w-[1640px] mx-auto rounded-xl">
       <h2 className="text-3xl font-bold pb-6 text-center underline">
@@ -66,6 +89,7 @@ const WorkoutPlan: React.FC = () => {
           />
         ))}
       </div>
+      <div>signed in as {currentUser?.name}</div>
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         onClick={saveWorkout}
