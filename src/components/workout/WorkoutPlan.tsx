@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import WorkoutPlanItem from "./WorkoutPlanItem";
-import useWorkoutStore from "../hooks/useWorkout";
+import useWorkoutStore, { Exercise } from "../hooks/useWorkout";
 import { SafeUser } from "@/types";
 
 interface WorkoutPlanProps {
@@ -34,15 +34,17 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = () => {
 
   const saveWorkout = async (): Promise<void> => {
     setSaving(true);
-
+    console.log(currentUser);
     try {
       if (!session?.user?.email) {
         throw new Error("User not authenticated");
       }
-      const userEmail = session.user?.email ?? undefined;
+
       // Prepare the workout data to be sent to the server
       const workoutData = {
-        exercises: workoutPlan.exercises.map((exercise) => ({
+        date: new Date(),
+        user: { connect: { id: `${currentUser?.id}` } },
+        exercises: workoutPlan.exercises.map((exercise: Exercise) => ({
           name: exercise.name,
           repCount: exercise.repCount,
           weightCount: exercise.weightCount,
@@ -50,15 +52,14 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = () => {
         })),
       };
 
+      console.log(workoutData);
       // Send a POST request to save the workout
-      const response = await axios.post("/api/workout", {
-        exercises: workoutData.exercises,
-      });
+      const response = await axios.post("/api/workout", workoutData);
 
       if (response.status === 200) {
         console.log("Workout saved successfully!");
         // Reset the workout plan
-        // workoutPlan.reset();
+        workoutPlan.reset();
         // Map the response data to the frontend
         const savedWorkout = response.data;
         // Display the saved workout to the user
@@ -73,13 +74,14 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = () => {
 
     setSaving(false);
   };
+
   return (
     <div className="bg-white mt-12 pt-10 mb-12 pb-2 max-w-[1640px] mx-auto rounded-xl">
       <h2 className="text-3xl font-bold pb-6 text-center underline">
         Your Workout
       </h2>
       <div className="justify-center">
-        {workoutPlan.exercises.map((exercise) => (
+        {workoutPlan.exercises.map((exercise: Exercise) => (
           <WorkoutPlanItem
             key={exercise.id}
             exerciseTitle={exercise.name}

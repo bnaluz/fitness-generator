@@ -1,66 +1,46 @@
-import prisma from "@/libs/prismadb";
-import { getSession } from "next-auth/react";
+import prisma from "../../libs/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Session } from "next-auth";
 
-export default async function saveWorkouts(
+interface Exercise {
+  name: string;
+  sets: number;
+  reps: number;
+}
+
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  try {
-    // Get the authenticated session
-    const session: Session | null = await getSession({ req });
+  if (req.method === "POST") {
+    const {
+      date,
+      userId,
+      exercises,
+    }: { date: Date; userId: string; exercises: Exercise[] } = req.body;
 
-    if (!session) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    // Access the authenticated user's email
-    const userEmail: string | undefined = session.user?.email ?? undefined;
-
-    if (!userEmail) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const { exercises } = req.body;
-
-    if (!exercises || !exercises.length) {
-      return res.status(400).json({
-        message: "Invalid request. Exercises data is missing or empty.",
-      });
-    }
-
-    // Save the workout to the database
-    const workout = await prisma.workout.create({
-      data: {
-        userId: userEmail,
-        date: new Date(),
-        exercises: {
-          create: exercises.map(
-            (exercise: {
-              name: any;
-              repCount: any;
-              weightCount: any;
-              setCount: any;
-            }) => ({
+    try {
+      const workout = await prisma.workout.create({
+        data: {
+          date,
+          user: { connect: { id: userId } },
+          exercises: {
+            create: exercises.map((exercise) => ({
               name: exercise.name,
-              repCount: exercise.repCount,
-              weightCount: exercise.weightCount,
-              setCount: exercise.setCount,
-            })
-          ),
+              sets: exercise.sets,
+              reps: exercise.reps,
+            })),
+          },
         },
-      },
-      include: {
-        exercises: true,
-      },
-    });
+      });
 
-    return res.status(200).json(workout);
-  } catch (error: any) {
-    console.error("Error saving workout:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+      res
+        .status(201)
+        .json({ message: "Workout created successfully", workout });
+    } catch (error) {
+      console.error("Error creating workout:", error);
+      res.status(500).json({ error: "Failed to create workout" });
+    }
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
   }
 }

@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-type Exercise = {
+export type Exercise = {
   setCount?: number;
   name: any;
   id: any;
   repCount?: number;
   weightCount?: number;
-  userId: string; // Add userId property
+  userId?: string;
 };
 
 interface WorkoutStore {
@@ -16,6 +16,7 @@ interface WorkoutStore {
   updateSets: (exerciseId: any, setCount: number) => void;
   updateReps: (exerciseId: any, repCount: number) => void;
   updateWeight: (exerciseId: any, weightCount: number) => void;
+  reset: () => void; // Add reset function
 }
 
 const useWorkoutStore = create<WorkoutStore>((set) => ({
@@ -62,6 +63,11 @@ const useWorkoutStore = create<WorkoutStore>((set) => ({
       exercises: state.exercises.map((i) =>
         i.id === exerciseId ? { ...i, weightCount } : i
       ),
+    })),
+
+  reset: () =>
+    set(() => ({
+      exercises: [],
     })),
 }));
 
