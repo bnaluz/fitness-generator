@@ -1,11 +1,6 @@
 import prisma from "../../libs/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
-
-interface Exercise {
-  name: string;
-  sets: number;
-  reps: number;
-}
+import { Exercise } from "@/components/hooks/useWorkout";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,25 +11,30 @@ export default async function handler(
       date,
       userId,
       exercises,
-    }: { date: Date; userId: string; exercises: Exercise[] } = req.body;
+      title,
+    }: { title: string; date: Date; userId: string; exercises: Exercise[] } =
+      req.body;
+    console.log(exercises);
 
     try {
       const workout = await prisma.workout.create({
         data: {
           date,
-          user: { connect: { id: userId } },
+          userId,
+          title,
           exercises: {
             create: exercises.map((exercise) => ({
               name: exercise.name,
-              sets: exercise.sets,
-              reps: exercise.reps,
+              repCount: exercise.repCount,
+              weightCount: exercise.weightCount,
+              setCount: exercise.setCount,
             })),
           },
         },
       });
 
       res
-        .status(201)
+        .status(200)
         .json({ message: "Workout created successfully", workout });
     } catch (error) {
       console.error("Error creating workout:", error);

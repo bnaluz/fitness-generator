@@ -2,6 +2,9 @@ import Navbar from "@/components/navbar/Navbar";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function App({
   Component,
@@ -9,8 +12,10 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <Navbar />
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Navbar />
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </SessionProvider>
   );
 }

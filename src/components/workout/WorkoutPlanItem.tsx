@@ -24,40 +24,40 @@ const WorkoutPlanItem: React.FC<WorkoutPlanItemProps> = ({
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between py-2 px-4 border-b bg-white ">
+    <div className="flex flex-col md:flex-row items-center justify-between py-2 px-4 border-b bg-white">
       <span className="font-semibold mb-2 md:mb-0 md:mr-4">
         {exerciseTitle}
       </span>
-      <div className="flex flex-col md:flex-row items-center md:space-x-2 ">
-        <label>
+      <div className="flex flex-col md:flex-row items-center md:space-x-2">
+        <label className="flex items-center">
           Sets:
           <input
             className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={setValue}
             min="0"
-            placeholder="how many sets?"
+            placeholder="How many sets?"
             onChange={(e) => updateSets(exercise.id, parseInt(e.target.value))}
           />
         </label>
-        <label>
+        <label className="flex items-center">
           Reps:
           <input
             className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={repValue}
             min="0"
-            placeholder="how many reps?"
+            placeholder="How many reps?"
             onChange={(e) => updateReps(exercise.id, parseInt(e.target.value))}
           />
         </label>
-        <label>
+        <label className="flex items-center">
           Weight:
           <input
             className="mx-2 my-1 md:my-0 border border-gray-300 rounded-lg px-2 py-1"
             type="number"
             value={weightValue}
-            placeholder="what weight?"
+            placeholder="What weight?"
             onChange={(e) =>
               updateWeight(exercise.id, parseInt(e.target.value))
             }

@@ -26,7 +26,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   return (
     <div className="relative">
       <div
-        className="p-5 md:py-2 md:px-2 border-[1px] border-neutral-100 bg-white flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+        className="p-5 md:p-2 border-[1px] border-neutral-100 bg-white flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
         onClick={toggleOpen}
       >
         <AiOutlineMenu />
@@ -36,12 +36,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       </div>
 
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md  w-[20vh] bg-white overflow-hidden right-0 top-12 text-sm">
+        <div className="absolute rounded-xl  shadow-md bg-white  md:w-[30vw] md:right-0 md:top-12 text-sm mt-3 md:mt-0">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
+                <MenuItem onClick={() => router.push("/")} label="Home" />
                 <MenuItem
-                  onClick={() => router.push("/trips")}
+                  onClick={() => router.push("/userWorkout")}
                   label="My Workouts"
                 />
 
