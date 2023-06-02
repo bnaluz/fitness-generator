@@ -66,11 +66,9 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = () => {
 
       if (response.status === 200) {
         console.log("Workout saved successfully!");
-        // Reset the workout plan
         workoutPlan.reset();
       }
     } catch (error) {
-      // Handle the error, display an error message, or perform any error-specific actions
       console.error("Error saving workout:", error);
     }
     toast.success("Workout Saved!");
@@ -104,7 +102,7 @@ const WorkoutPlan: React.FC<WorkoutPlanProps> = () => {
         ))}
       </div>
       <button
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4 w-full"
+        className="bg-[#23237f]  hover:bg-[#118ab2] text-white font-bold py-2 px-4 rounded mt-4 w-full"
         onClick={saveWorkout}
         disabled={saving}
       >

@@ -29,7 +29,7 @@ const MusclesList = ({ onMuscleChange }: any) => {
         {allMuscles.map((muscle: string) => (
           <button
             key={muscle}
-            className="bg-[#23237f] hover:bg-[#01011f] text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
+            className="bg-[#23237f] hover:bg-[#118ab2] text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
             onClick={() => onMuscleChange(muscle)}
           >
             {muscle}

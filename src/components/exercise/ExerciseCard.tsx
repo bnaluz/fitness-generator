@@ -59,7 +59,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
                   userId: "",
                 })
               }
-              className="mx-auto mt-2 bg-[#23237f] hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+              className="mx-auto mt-2 bg-[#23237f] hover:bg-[#118ab2] text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
             >
               Add to workout
             </button>
